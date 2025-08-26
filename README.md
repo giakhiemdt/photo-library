@@ -1,6 +1,6 @@
 # 📸 Photo Gallery Microservices
 
-## ✅ Giới thiệu
+## 1. Giới thiệu
 
 Hệ thống **Photo Gallery** được xây dựng bằng **Kotlin + Spring Boot + Gradle**, triển khai theo kiến trúc **Microservice**, nhằm quản lý hình ảnh/video giống iOS Gallery.
 Hệ thống cho phép:
@@ -13,7 +13,7 @@ Hệ thống cho phép:
 
 ---
 
-## ✅ Kiến trúc hệ thống
+## 2. Kiến trúc hệ thống
 
 ```
 [ API Gateway ] ---> [ Auth Service ] ---> [ MySQL ]
@@ -32,7 +32,7 @@ Hệ thống cho phép:
 
 ---
 
-## ✅ Công nghệ sử dụng
+## 3. Công nghệ sử dụng
 
 * **Ngôn ngữ**: Kotlin (JVM 17)
 * **Framework**: Spring Boot 3.x
@@ -46,7 +46,7 @@ Hệ thống cho phép:
 
 ---
 
-## ✅ Các service
+## 4. Các service
 
 | Service         | Port | Chức năng                           |
 | --------------- | ---- | ----------------------------------- |
@@ -59,7 +59,7 @@ Hệ thống cho phép:
 
 ---
 
-## ✅ Chức năng chính
+## 5. Chức năng chính
 
 * **Auth Service**
 
@@ -82,7 +82,7 @@ Hệ thống cho phép:
 
 ---
 
-## ✅ Cấu trúc multi-repo
+## 6. Cấu trúc multi-repo
 
 ```
 photo-gallery/
@@ -97,7 +97,7 @@ photo-gallery/
 
 ---
 
-## ✅ Cách chạy dự án
+## 7. Cách chạy dự án
 
 ### **1. Chạy 1 service (ví dụ: Auth Service)**
 
@@ -131,7 +131,7 @@ docker-compose up -d
 
 ---
 
-## ✅ API Documentation
+## 8. API Documentation
 
 * Mỗi service tích hợp **Swagger UI**:
 
@@ -142,7 +142,7 @@ docker-compose up -d
 
 ---
 
-## ✅ Roadmap
+## 9. Roadmap
 
 * [x] Tạo **Auth Service** (JWT + Role)
 * [ ] Tạo **User Service**
@@ -154,7 +154,7 @@ docker-compose up -d
 
 ---
 
-## ✅ Yêu cầu hệ thống
+## 10. Yêu cầu hệ thống
 
 * JDK 17+
 * Gradle 8+
