@@ -12,6 +12,7 @@ import RegisterRequest
 import UserResponse
 import LoginRequest
 import TokenResponse
+import ProfileResponse
 
 @Service
 class AuthService(
@@ -64,5 +65,13 @@ class AuthService(
         )
     }
     
-    // fun me(req) 
+    fun getCurrentUser(userId: Long): ProfileResponse {
+        val user = userRepository.findByUserId(userId)
+            ?: throw RuntimeException("User not found")
+        return ProfileResponse(
+            username = user.username,
+            email = user.email,
+        )
+    }
+    
 }

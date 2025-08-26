@@ -11,18 +11,19 @@ class GatewayConfig(
     private val jwtAuthFilter: JwtAuthFilter
 ) {
 
-    // @Bean
-    // fun routes(builder: RouteLocatorBuilder): RouteLocator {
-    //     return builder.routes()
-    //         .route("auth-service") {
-    //             it.path("/auth/**")
-    //                 .uri("http://localhost:8081") // Service name trong Docker hoặc Kubernetes
-    //         }
-    //         // .route("media-service") {
-    //         //     it.path("/media/**")
-    //         //         .filters { f -> f.filter(jwtAuthFilter) } // Áp filter check JWT
-    //         //         .uri("http://media-service:8082")
-    //         // }
-    //         .build()
-    // }
+    @Bean
+    fun routes(builder: RouteLocatorBuilder): RouteLocator {
+        return builder.routes()
+            .route("auth-service") {
+                it.path("/auth/**")
+                    .filters { f -> f.filter(jwtAuthFilter) }
+                    .uri("http://localhost:8081") 
+            }
+            .route("auth-docs") {
+                it.path("/v3/api-docs/auth")
+                    .filters { f -> f.rewritePath("/v3/api-docs/auth", "/v3/api-docs") }
+                    .uri("http://localhost:8081")
+            }
+            .build()
+    }
 }

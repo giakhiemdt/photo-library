@@ -16,8 +16,18 @@ class JwtAuthFilter(
     @Value("\${jwt.secret}") private val secret: String,
 ) : GatewayFilter {
 
+    private val excludedPaths = listOf(
+        "/auth/login",
+        "/auth/register"
+    )
+
     override fun filter(exchange: ServerWebExchange, chain: GatewayFilterChain): Mono<Void> {
         val request = exchange.request
+
+        if (excludedPaths.any { request.uri.path.startsWith(it) }) {
+            return chain.filter(exchange)
+        }
+
         val response = exchange.response
 
         val authHeader = request.headers.getFirst(HttpHeaders.AUTHORIZATION)
@@ -29,26 +39,30 @@ class JwtAuthFilter(
         val token = authHeader.substring(7)
 
         try {
-            // Decode token
-            val claims = Jwts.parserBuilder()
-                .setSigningKey(Keys.hmacShaKeyFor(secret.toByteArray()))
-                .build()
-                .parseClaimsJws(token)
-                .body
 
-            // Optional: gọi Auth Service check whitelist
-            // AuthClient.checkToken(token)
+            val userInfo = validateToken(token)
 
-            exchange.request.mutate()
-                .header("X-User-Id", claims["userId"].toString())
-                .header("X-User-Role", claims["role"].toString())
+            val mutatedRequest = exchange.request.mutate()
+                .header("X-User-Id", userInfo.userId)
+                .header("X-User-Role", userInfo.role)
                 .build()
 
+            val mutatedExchange = exchange.mutate().request(mutatedRequest).build()
+            return chain.filter(mutatedExchange)
         } catch (ex: Exception) {
             response.statusCode = HttpStatus.UNAUTHORIZED
             return response.setComplete()
         }
+    }
 
-        return chain.filter(exchange)
+    private fun validateToken(token: String): UserInfo {
+        val claims = Jwts.parserBuilder()
+                .setSigningKey(Keys.hmacShaKeyFor(secret.toByteArray()))
+                .build()
+                .parseClaimsJws(token)
+                .body
+        return UserInfo(claims["userId"].toString(), claims["role"].toString())
     }
 }
+
+data class UserInfo(val userId: String, val role: String)
