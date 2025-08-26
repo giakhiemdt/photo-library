@@ -15,15 +15,18 @@ class JwtTokenProvider(
     private val key = Keys.hmacShaKeyFor(secret.toByteArray())
 
     fun generateToken(username: String, role: String): String {
-        val now = Date()
-        val expiryDate = Date(now.time + expiration)
         return Jwts.builder()
             .setSubject(username)
             .claim("role", role)
-            .setIssuedAt(now)
-            .setExpiration(expiryDate)
+            .setIssuedAt(Date())
+            .setExpiration(getExpiryDate())
             .signWith(key, SignatureAlgorithm.HS256)
             .compact()
+    }
+
+    fun getExpiryDate(): Date {
+        val now = Date()
+        return Date(now.time + expiration)
     }
 
     fun generateRefreshToken(username: String): String {
