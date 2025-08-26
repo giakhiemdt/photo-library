@@ -24,4 +24,10 @@ class AuthController(private val authService: AuthService) {
     fun login(@RequestBody req: LoginRequest): ResponseEntity<TokenResponse> {
         return ResponseEntity.ok(authService.login(req))
     }
+
+    // @PostMapping("/me")
+    // fun me(): ResponseEntity<> {
+
+    //     return ResponseEntity.ok()
+    // }
 }
